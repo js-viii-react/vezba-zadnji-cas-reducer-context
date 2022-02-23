@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import ChildComponent from "./components/ChildComponent";
+import GameList from "./components/GameList";
+import GameListWithoutReducer from "./components/GameListWithoutReducer";
+import MyProjectsList from "./components/MyProjectsList";
+import ProjectProvider from "./context/ProjectProvider";
+
+const initialState = [
+  {
+    title: "Overwatch",
+    id: 0,
+  },
+  {
+    title: "CoD",
+    id: 1,
+  },
+];
 
 function App() {
+  const [state, setState] = useState(initialState);
+
+  const handleAddGame = (game) => {
+    setState((prevState) => [prevState, game]);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ProjectProvider>
+        <GameList />
+        <ChildComponent />
+        <br />
+        <br />
+        <br />
+        <GameListWithoutReducer
+          state={state}
+          setState={setState}
+          handleAddGame={handleAddGame}
+        />
+        <MyProjectsList />
+      </ProjectProvider>
     </div>
   );
 }
